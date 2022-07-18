@@ -1,7 +1,7 @@
 #ifndef ITOILET_FLUSHER_HPP__
 #define ITOILET_FLUSHER_HPP__
 
-class IToiletFlusher
+class IToiletFlusher : public Subscriber
 {
     public: 
         virtual void flush() = 0;

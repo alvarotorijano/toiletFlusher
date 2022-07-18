@@ -3,18 +3,20 @@
 
 #include <Arduino.h>
 #include <ItoiletFlusher.hpp>
+#include "pins.h"
+
+#define L293D_ENDSTOP_DEBOUNCE_MS       10
 
 #define L293D_FORWARD_DUTY_CYCLE 120
 #define L293D_REVERSE_DUTY_CYCLE 150
 #define L293D_OFF_DUTY_CYCLE       0
-#define ENDSTOP_DEBOUNCE_MS       50
 
-#define DRIFT_FORWARD_DELAY_MS    60
-#define DRIFT_REVERSE_DELAY_MS    50
+#define L293D_DRIFT_FORWARD_DELAY_MS    0
+#define L293D_DRIFT_REVERSE_DELAY_MS    50
 
-#define FLUSH_TIME_MS             5000
+#define L293D_FLUSH_TIME_MS             5000
 
-class L293dEnstop : IToiletFlusher{
+class L293dEnstop : public IToiletFlusher {
 
     private:
         uint8_t dir1_pin_;
@@ -25,8 +27,11 @@ class L293dEnstop : IToiletFlusher{
         void semiTurn();
 
     public:
-        L293dEnstop(int dir1_pin, int dir2_pin, int speed_pin, int endstop_pin);
+        void onEvent(Event event);
+        L293dEnstop(int dir1_pin = L293D_MOTOR_DIRECTION1_PIN, int dir2_pin = L293D_MOTOR_DIRECTION2_PIN, int speed_pin = L293D_MOTOR_SPEED_PIN, int endstop_pin = L293D_POS_ENDSTOP_PIN);
         void flush();
 };
+
+void launchTouletFlusherTask(void *pvParameters);
 
 #endif
