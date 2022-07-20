@@ -10,14 +10,17 @@ enum eventTypes{
     CAT_DETECTED,
     CAT_NOT_DETECTED,
     FLUSH_BUTTON_PUSHED,
+    FLUSH_BUTTON_RELEASED,
+    FLUSH_STARTED,
+    FLUSH_FINISHED
 };
 
-typedef uint32_t eventType_t;
+typedef enum eventTypes eventType_t;
 
 class Event {
     public:
-        eventType_t eventType;
-        std::shared_ptr<void> eventData;
+        eventType_t eventType = NO_EVENT;
+        std::shared_ptr<void> eventData = nullptr;
 };
 
 class Subscriber {

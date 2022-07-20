@@ -11,8 +11,7 @@ CatDetector::CatDetector() :
     #endif
 
 {
-    //actionOnDetect_ = actionOnDetect;
-    Serial.println("Cat Detector");
+
     xTaskCreate(
     launchCatDetectorTask,
     "detectCat_task",   // Name of the task (for debugging)
@@ -51,26 +50,29 @@ bool searching = false;
         {
             if ((searching) && !(distance > CAT_MIN_DISTANCE && distance < CAT_MAX_DISTANCE))
             {
+                
                 if ((millis() - lastDetectionTime > CAT_MIN_TOILET_TIME) 
                     && (millis() - lastDetectionTime < CAT_MAX_TOILET_TIME)) 
                 {
                     // cat detected
+                    Serial.println("Cat detected");
                     #ifdef DEBUG_RANGE_METER
-                        Serial.println("Cat detected");
-                        delay(3000);
+                        delay(1000);
                     #endif
+                    searching = false;
+                    lastDetectionTime = 0;
                     onCatDetected();
                 }
                 else 
                 {
                     // cat not detected
+                    Serial.println("Cat not detected");
                     #ifdef DEBUG_RANGE_METER
-                        Serial.println("Cat not detected");
-                        delay(3000);
+                        delay(1000);
                     #endif
-                    onCatNotDetected();
                     searching = false;
                     lastDetectionTime = 0;
+                    onCatNotDetected();
                 }
             }
         }
@@ -80,7 +82,6 @@ bool searching = false;
 void CatDetector::onCatDetected() {
     Event event;
     event.eventType = CAT_DETECTED;
-    event.eventData = nullptr;
     
     EventDispatcher & dispatcher = EventDispatcher::getInstance();
     dispatcher.sendEvent(event);
@@ -88,8 +89,7 @@ void CatDetector::onCatDetected() {
 
 void CatDetector::onCatNotDetected() {
     Event event;
-    event.eventType = CAT_NOT_DETECTED;s
-    event.eventData = nullptr;
+    event.eventType = CAT_NOT_DETECTED;
     
     EventDispatcher & dispatcher = EventDispatcher::getInstance();
     dispatcher.sendEvent(event);

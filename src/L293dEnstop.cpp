@@ -14,23 +14,58 @@ L293dEnstop::L293dEnstop(int dir1_pin, int dir2_pin, int speed_pin, int endstop_
     digitalWrite(dir1_pin_, HIGH);
     digitalWrite(dir2_pin_, LOW);
 
-    CatDetector::CatDetector() :
-
-    //actionOnDetect_ = actionOnDetect;
-    Serial.println("Toilet Flusher");
     xTaskCreate(
     launchTouletFlusherTask,
-    "detectCat_task",   // Name of the task (for debugging)
+    "flusher_task",   // Name of the task (for debugging)
     2000,            // Stack size (bytes)
     this,            // Parameter to pass
     1,               // Task priority
     NULL             // Task handle
     );
 
+
+    EventDispatcher & eventDispatcher = EventDispatcher::getInstance();
+    eventDispatcher.subscribe(eventTypes::CAT_DETECTED, (Subscriber*)this);
+    eventDispatcher.subscribe(eventTypes::FLUSH_BUTTON_PUSHED, (Subscriber*)this);
+
 }
 
 void launchTouletFlusherTask(void *pvParameters) {
     L293dEnstop * toiletFlusher = (L293dEnstop *)pvParameters;
+    toiletFlusher->flushLoop();
+}
+
+void L293dEnstop::flushLoop(){
+    Event event;
+
+    while (true)
+    {
+        if (flushEnabled_)
+        {
+            delay(500);
+
+            event.eventType = FLUSH_STARTED;
+            EventDispatcher::getInstance().sendEvent(event);
+
+            semiTurn();
+            if(digitalRead(endstop_pin_)==HIGH){
+                semiTurn();
+                Serial.println("Misturn");
+            }
+            delay(L293D_FLUSH_TIME_MS);
+            semiTurn();
+            if(digitalRead(endstop_pin_)==HIGH){
+                semiTurn();
+                Serial.println("Misturn");
+            }
+            flushEnabled_ = false;
+
+            event.eventType = FLUSH_FINISHED;
+            EventDispatcher::getInstance().sendEvent(event);
+        }
+        //This will prevent CPU from being eaten
+        delay(100);
+    }
 }
 
 void L293dEnstop::semiTurn(){
@@ -63,16 +98,19 @@ void L293dEnstop::semiTurn(){
 }
 
 void L293dEnstop::flush(){
-    semiTurn();
-    if(digitalRead(endstop_pin_)==HIGH){
-        semiTurn();
-        Serial.println("Misturn");
+    flushEnabled_ = true;
+}
+
+void L293dEnstop::onEvent(Event event)
+{
+    switch (event.eventType)
+    {
+    case CAT_DETECTED:
+    case FLUSH_BUTTON_PUSHED:
+        flush();
+        break;
+    
+    default:
+        break;
     }
-    delay(L293D_FLUSH_TIME_MS);
-    semiTurn();
-    if(digitalRead(endstop_pin_)==HIGH){
-        semiTurn();
-        Serial.println("Misturn");
-    }
-    Serial.println("Flush finished");
 }
