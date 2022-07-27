@@ -30,12 +30,14 @@ L293dEnstop::L293dEnstop(int dir1_pin, int dir2_pin, int speed_pin, int endstop_
 
 }
 
-void launchTouletFlusherTask(void *pvParameters) {
+void launchTouletFlusherTask(void *pvParameters) 
+{
     L293dEnstop * toiletFlusher = (L293dEnstop *)pvParameters;
     toiletFlusher->flushLoop();
 }
 
-void L293dEnstop::flushLoop(){
+void L293dEnstop::flushLoop()
+{
     Event event;
 
     while (true)
@@ -68,12 +70,15 @@ void L293dEnstop::flushLoop(){
     }
 }
 
-void L293dEnstop::semiTurn(){
+void L293dEnstop::semiTurn()
+{
 
     digitalWrite(dir1_pin_, HIGH);
     digitalWrite(dir2_pin_, LOW);
 
     analogWrite(speed_pin_, L293D_FORWARD_DUTY_CYCLE);
+
+    delay(150);
 
     while(digitalRead(endstop_pin_)==LOW){
         delay(L293D_ENDSTOP_DEBOUNCE_MS);
@@ -94,10 +99,11 @@ void L293dEnstop::semiTurn(){
     digitalWrite(dir2_pin_, LOW);
     analogWrite(speed_pin_, L293D_OFF_DUTY_CYCLE);
 
-    delay(L293D_ENDSTOP_DEBOUNCE_MS);
+    delay(L293D_END_CYCLE_DEBOUNCE_MS);
 }
 
-void L293dEnstop::flush(){
+void L293dEnstop::flush()
+{
     flushEnabled_ = true;
 }
 

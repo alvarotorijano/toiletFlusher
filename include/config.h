@@ -24,5 +24,10 @@
 
 #define FLUSH_BUTTON_DEBOUNCE_TIME_MS 50
 
+#define BLUETOOTH_SERIAL_MODE         SERIAL_8N1
+#define BLUETOOTH_BAUDRATE            9600
+
+#define FOOD_DISPENSER_DELAY_MS       5000
+
 #include <configSanitizer.h>
 #endif

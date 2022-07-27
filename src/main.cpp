@@ -44,8 +44,8 @@ void setup(){
     ledController_ = new LedController();
     flushButtonController_ = new FlushButtonController();
 
-    
-
+    Serial2.begin(BLUETOOTH_BAUDRATE, BLUETOOTH_SERIAL_MODE, BLUETOOTH_RX_PIN, BLUETOOTH_TX_PIN);
+    Serial2.println("test");
 }
 
 void loop(){

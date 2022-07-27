@@ -6,7 +6,7 @@
 #include "pins.h"
 #include "eventDispatcher.hpp"
 
-#define L293D_ENDSTOP_DEBOUNCE_MS       10
+
 
 #define L293D_FORWARD_DUTY_CYCLE 120
 #define L293D_REVERSE_DUTY_CYCLE 150
@@ -15,7 +15,11 @@
 #define L293D_DRIFT_FORWARD_DELAY_MS    0
 #define L293D_DRIFT_REVERSE_DELAY_MS    50
 
+#define L293D_START_DEBOUNCE_MS         50
+#define L293D_ENDSTOP_DEBOUNCE_MS       5
 #define L293D_FLUSH_TIME_MS             5000
+
+#define L293D_END_CYCLE_DEBOUNCE_MS     300
 
 class L293dEnstop : public Subscriber, public IToiletFlusher{
 
