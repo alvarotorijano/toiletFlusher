@@ -9,17 +9,18 @@
 
 #define AUTOSULIVANS_PRIZE_MESSAGE "test"
 
-class AutoSulivansFeederController : private IFoodDispenser, public Subscriber
+class AutoSulivansFeederController : public IFoodDispenser, public Subscriber
 {
     public:
         AutoSulivansFeederController();
-        void onEvent(eventTypes eventType, void *eventData);
+        void onEvent(Event event);
+        void dispenseFood();
+        void sendMessageLoop();
 
     private:
-        void dispenseFood();
-
+        bool payPrizes_ = false;
 };
 
-void autosulivansTask(void *pvParameters);
+void launchAutosulivansTask(void *pvParameters);
 
 #endif

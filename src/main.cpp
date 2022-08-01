@@ -22,6 +22,7 @@
 #include "EventDispatcher.hpp"
 #include "ledController.hpp"
 #include "flushButtonController.hpp"
+#include "AutoSulivansFeederController.hpp"
 
 #define  SERIAL_BAUD_RATE  115200
 
@@ -31,6 +32,8 @@ L293dEnstop * toiletFlusher = nullptr;
 CatDetector * catDetector_ = nullptr;
 LedController * ledController_ = nullptr;
 FlushButtonController * flushButtonController_ = nullptr;
+AutoSulivansFeederController * autoSulivansFeederController_ = nullptr;
+
 
 void setup(){
 
@@ -43,9 +46,7 @@ void setup(){
     catDetector_ = new CatDetector();
     ledController_ = new LedController();
     flushButtonController_ = new FlushButtonController();
-
-    Serial2.begin(BLUETOOTH_BAUDRATE, BLUETOOTH_SERIAL_MODE, BLUETOOTH_RX_PIN, BLUETOOTH_TX_PIN);
-    Serial2.println("test");
+    autoSulivansFeederController_ = new AutoSulivansFeederController();
 }
 
 void loop(){

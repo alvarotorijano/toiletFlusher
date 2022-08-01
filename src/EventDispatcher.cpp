@@ -1,5 +1,7 @@
 #include <EventDispatcher.hpp>
 
+#include <Arduino.h>
+
 EventDispatcher &EventDispatcher::getInstance()
 {
     static EventDispatcher instance;
@@ -13,6 +15,7 @@ void EventDispatcher::subscribe(eventType_t eventType, Subscriber * sub)
         //subscribers[eventType] = std::set<Subscriber*>();
     }
     subscribers[eventType].insert(sub);
+    //Serial.println("Event: " + String(eventType) + "Subs: " + String(subscribers[eventType].size()));
 }
 
 void EventDispatcher::unsubscribe(eventType_t eventType, Subscriber * sub)
@@ -24,6 +27,8 @@ void EventDispatcher::unsubscribe(eventType_t eventType, Subscriber * sub)
 
 void EventDispatcher::sendEvent(Event event)
 {
+    //Serial.println("Event: " + event.eventType);
+    //Serial.println("Elements in vector: " + subscribers[event.eventType].size());
     if(subscribers.find(event.eventType)!=subscribers.end()){
         for(auto sub : subscribers[event.eventType]){
             sub->onEvent(event);
