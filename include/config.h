@@ -27,7 +27,10 @@
 #define BLUETOOTH_SERIAL_MODE         SERIAL_8N1
 #define BLUETOOTH_BAUDRATE            9600
 
-#define FOOD_DISPENSER_DELAY_MS       15000
+#define FOOD_DISPENSER_DELAY_MS       10000
+
+#define ALEXA_FLUSHER_SPOKEN_NAME           "cisterna"
+#define ALEXA_PRIZE_DEVILER_SPOKEN_NAME     "premios"
 
 #include <configSanitizer.h>
 #endif

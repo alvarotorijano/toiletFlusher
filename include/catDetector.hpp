@@ -7,6 +7,8 @@
 #include <VL53L3CXRangeMeter.hpp>
 #include <ultrasonicController.hpp>
 
+#define DEBUG_RANGE_METER
+
 class CatDetector {
     public:
         CatDetector();

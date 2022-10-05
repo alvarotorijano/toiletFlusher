@@ -13,12 +13,6 @@
 
 #define LED_PIN                  2
 
-/*/
-#ifndef LED_BUILTIN
-#define LED_BUILTIN LED_PIN
-#endif 
-//*/
-
 #define L293D_MOTOR_SPEED_PIN         23
 #define L293D_MOTOR_DIRECTION1_PIN    25
 #define L293D_MOTOR_DIRECTION2_PIN    18
@@ -29,6 +23,7 @@
 
 #define FLUSH_BUTTON_PIN              12
 
+#define BLUETOOTH_ENABLE_PIN          15
 #define BLUETOOTH_RX_PIN              16
 #define BLUETOOTH_TX_PIN              17
 

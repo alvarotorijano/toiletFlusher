@@ -27,6 +27,7 @@ L293dEnstop::L293dEnstop(int dir1_pin, int dir2_pin, int speed_pin, int endstop_
     EventDispatcher & eventDispatcher = EventDispatcher::getInstance();
     eventDispatcher.subscribe(eventTypes::CAT_DETECTED, (Subscriber*)this);
     eventDispatcher.subscribe(eventTypes::FLUSH_BUTTON_PUSHED, (Subscriber*)this);
+    eventDispatcher.subscribe(eventType_t::ALEXA_FLUSH, (Subscriber*)this);
 
 }
 
@@ -113,6 +114,7 @@ void L293dEnstop::onEvent(Event event)
     {
     case CAT_DETECTED:
     case FLUSH_BUTTON_PUSHED:
+    case ALEXA_FLUSH:
         flush();
         break;
     

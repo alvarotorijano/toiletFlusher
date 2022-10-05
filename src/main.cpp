@@ -23,6 +23,16 @@
 #include "ledController.hpp"
 #include "flushButtonController.hpp"
 #include "AutoSulivansFeederController.hpp"
+#include "AlexaEventSender.hpp"
+#include "config.h"
+#include "pins.h"
+#include "wifiConfig.h"
+
+#ifdef ARDUINO_ARCH_ESP32
+#include <WiFi.h>
+#else
+#include <ESP8266WiFi.h>
+#endif
 
 #define  SERIAL_BAUD_RATE  115200
 
@@ -33,22 +43,52 @@ CatDetector * catDetector_ = nullptr;
 LedController * ledController_ = nullptr;
 FlushButtonController * flushButtonController_ = nullptr;
 AutoSulivansFeederController * autoSulivansFeederController_ = nullptr;
+AlexaEventSender * alexaEventSender_ = nullptr;
 
+void setupWifi();
 
 void setup(){
 
-    disableCore0WDT();
-
+    //disableCore0WDT();
+    
+    
     Serial.begin(SERIAL_BAUD_RATE);
     Serial.println("Toilet Flusher");
+
+    setupWifi();
 
     toiletFlusher = new L293dEnstop();
     catDetector_ = new CatDetector();
     ledController_ = new LedController();
     flushButtonController_ = new FlushButtonController();
     autoSulivansFeederController_ = new AutoSulivansFeederController();
+    alexaEventSender_ = new AlexaEventSender();
+
+}
+
+
+
+void setupWifi(){
+    pinMode(LED_PIN, OUTPUT);
+    digitalWrite(LED_PIN, LOW);
+    Serial.println("Connecting to WiFi");
+    WiFi.begin(WIFI_SSID, WIFI_PASSWD);
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        Serial.print(".");
+    }
+    Serial.println("");
+    Serial.println("WiFi connected");
+    Serial.println("IP address: ");
+    Serial.println(WiFi.localIP());
+    digitalWrite(LED_PIN, HIGH);
+    
 }
 
 void loop(){
+
+    if (WiFi.status() != WL_CONNECTED) {
+        ESP.restart();
+    }
 
 }

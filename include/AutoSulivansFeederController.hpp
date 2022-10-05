@@ -7,7 +7,8 @@
 #include "config.h"
 #include "EventDispatcher.hpp"
 
-#define AUTOSULIVANS_PRIZE_MESSAGE "test"
+#define AUTOSULIVANS_CONNECTION_TIME 3000
+#define AUTOSULIVANS_DELIVER_PRICE_COMMAND "test"
 
 class AutoSulivansFeederController : public IFoodDispenser, public Subscriber
 {
@@ -16,6 +17,8 @@ class AutoSulivansFeederController : public IFoodDispenser, public Subscriber
         void onEvent(Event event);
         void dispenseFood();
         void sendMessageLoop();
+        void enableBT();
+        void disableBT();
 
     private:
         bool payPrizes_ = false;
