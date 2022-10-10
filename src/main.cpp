@@ -64,6 +64,13 @@ void setup(){
     autoSulivansFeederController_ = new AutoSulivansFeederController();
     alexaEventSender_ = new AlexaEventSender();
 
+/*
+    Event event;
+    event.eventType = ALEXA_PRIZE_DELIVERY;
+    //event.eventType = FLUSH_BUTTON_PUSHED;
+    EventDispatcher::getInstance().sendEvent(event);
+    */
+
 }
 
 

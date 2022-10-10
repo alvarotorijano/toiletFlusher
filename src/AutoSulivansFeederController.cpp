@@ -23,11 +23,13 @@ AutoSulivansFeederController::AutoSulivansFeederController()
 
 void AutoSulivansFeederController::enableBT()
 {
+    Serial.println("Enabling BT");
     digitalWrite(BLUETOOTH_ENABLE_PIN, HIGH);
 }
 
 void AutoSulivansFeederController::disableBT()
 {
+    Serial.println("Disabling BT");
     digitalWrite(BLUETOOTH_ENABLE_PIN, LOW);
 }
 
@@ -45,16 +47,20 @@ void AutoSulivansFeederController::sendMessageLoop()
         if (payPrizes_ == true)
         {   
             Serial.println("Started delivery process");
-            //enableBT();
+            enableBT();
+            
             delay((AUTOSULIVANS_CONNECTION_TIME > FOOD_DISPENSER_DELAY_MS) ? AUTOSULIVANS_CONNECTION_TIME: FOOD_DISPENSER_DELAY_MS);
+            //Serial2.flush();
             Serial2.println(AUTOSULIVANS_DELIVER_PRICE_COMMAND);
+            //Serial2.flush();
+            delay(AUTOSULIVANS_CONNECTION_TIME);
+            while (Serial2.available())
+            {
+                Serial2.read();
+            }
             payPrizes_ = false;
-            //disableBT();
+            disableBT();
             Serial.println("Finished delivery process");
-        }
-        while (Serial2.available())
-        {
-            Serial2.read();
         }
         delay(5);
     }
