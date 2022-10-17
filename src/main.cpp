@@ -48,9 +48,7 @@ AlexaEventSender * alexaEventSender_ = nullptr;
 void setupWifi();
 
 void setup(){
-
     //disableCore0WDT();
-    
     
     Serial.begin(SERIAL_BAUD_RATE);
     Serial.println("Toilet Flusher");
@@ -72,8 +70,6 @@ void setup(){
     */
 
 }
-
-
 
 void setupWifi(){
     pinMode(LED_PIN, OUTPUT);

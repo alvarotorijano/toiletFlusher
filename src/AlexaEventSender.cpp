@@ -1,4 +1,15 @@
 #include "AlexaEventSender.hpp"
+#include <AsyncElegantOTA.h>
+#include <WebSerial.h>
+
+void recvMsg(uint8_t *data, size_t len){
+  WebSerial.println("Received Data...");
+  String d = "";
+  for(int i=0; i < len; i++){
+    d += char(data[i]);
+  }
+  WebSerial.println(d);
+}
 
 AlexaEventSender::AlexaEventSender()
 {
@@ -6,20 +17,15 @@ AlexaEventSender::AlexaEventSender()
     espalexa = new Espalexa();
     server = new AsyncWebServer(80);
 
-/*
-    if (espalexa == nullptr || server == nullptr)
-    {
-        Serial.println("Failed to allocate memory for AlexaEventSender: rebooting");
-        ESP.restart();
-    }
-    */
+    AsyncElegantOTA.begin(server);
+    WebSerial.begin(server);
+    /* Attach Message Callback */
+    WebSerial.msgCallback(recvMsg);
 
-    server->on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-      request->send(200, "text/plain", "This is an example index page your server may send.");
+    server->on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
+      request->redirect("/update");
     });
-    server->on("/test", HTTP_GET, [](AsyncWebServerRequest *request){
-      request->send(200, "text/plain", "This is a second subpage you may have.");
-    });
+
     server->onNotFound([this](AsyncWebServerRequest *request){
       if (!espalexa->handleAlexaApiCall(request)) //if you don't know the URI, ask espalexa whether it is an Alexa control request
       {
