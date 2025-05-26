@@ -1,5 +1,4 @@
 #include "AlexaEventSender.hpp"
-#include <AsyncElegantOTA.h>
 #include <WebSerial.h>
 
 void recvMsg(uint8_t *data, size_t len){
@@ -17,7 +16,6 @@ AlexaEventSender::AlexaEventSender()
     espalexa = new Espalexa();
     server = new AsyncWebServer(80);
 
-    AsyncElegantOTA.begin(server);
     WebSerial.begin(server);
     /* Attach Message Callback */
     WebSerial.msgCallback(recvMsg);
