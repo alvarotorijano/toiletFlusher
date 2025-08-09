@@ -1,36 +1,46 @@
 #ifndef CONFIG_H__
 #define CONFIG_H__
 
+#include "arduino.h"
+
 //#define DEBUG_RANGE_METER
 
-#define SERIAL_BAUDRATE 115200
+extern const unsigned int SERIAL_BAUDRATE;
 
 #define VL53L3CX
 //#define ULTRASONIC
 
-#define CAT_MIN_DISTANCE 200
-#define CAT_MAX_DISTANCE 500
+extern const unsigned int CAT_MIN_DISTANCE;
+extern const unsigned int CAT_MAX_DISTANCE;
 
-#define CAT_MIN_TOILET_TIME 10000
-#define CAT_MAX_TOILET_TIME 35000
+extern const unsigned int CAT_MIN_TOILET_TIME;
+extern const unsigned int CAT_MAX_TOILET_TIME;
 
-#define FLUSH_LED_PWM_FRECUENCY       1000
-#define FLUSH_LED_PWM_CHANNEL         0
-#define FLUSH_LED_PWM_RESOLUTION      8
-#define MAX_PWM_LED_DUTY_CYCLE        255
-#define FADE_LED_PERIOD_MS            1000
-#define BLINK_LED_PERIOD_MS           100
-#define BLINK_LED_TIME_MS             1000
+extern const unsigned int FLUSH_LED_PWM_FRECUENCY;
+extern const unsigned int FLUSH_LED_PWM_CHANNEL;
+extern const unsigned int FLUSH_LED_PWM_RESOLUTION;
+extern const unsigned int MAX_PWM_LED_DUTY_CYCLE;
+extern const unsigned int FADE_LED_PERIOD_MS;
+extern const unsigned int BLINK_LED_PERIOD_MS;
+extern const unsigned int BLINK_LED_TIME_MS;
 
-#define FLUSH_BUTTON_DEBOUNCE_TIME_MS 50
+extern const unsigned int FLUSH_BUTTON_DEBOUNCE_TIME_MS;
 
-#define BLUETOOTH_SERIAL_MODE         SERIAL_8N1
-#define BLUETOOTH_BAUDRATE            9600
+extern const unsigned int BLUETOOTH_SERIAL_MODE;
+extern const unsigned int BLUETOOTH_BAUDRATE;
 
-#define FOOD_DISPENSER_DELAY_MS       10000
+extern const unsigned int FOOD_DISPENSER_DELAY_MS;
 
-#define ALEXA_FLUSHER_SPOKEN_NAME           "cisterna"
-#define ALEXA_PRIZE_DEVILER_SPOKEN_NAME     "premios"
+extern const char* ALEXA_FLUSHER_SPOKEN_NAME;
+extern const char* ALEXA_PRIZE_DEVILER_SPOKEN_NAME;
+
+extern const char* ssid;
+extern const char* password;
+
+extern const char* MQTT_SERVER;
+extern const char* MQTT_USER;
+extern const char* MQTT_PASSWORD;
+
 
 #include <configSanitizer.h>
 #endif

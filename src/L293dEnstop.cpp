@@ -27,7 +27,7 @@ L293dEnstop::L293dEnstop(int dir1_pin, int dir2_pin, int speed_pin, int endstop_
     EventDispatcher & eventDispatcher = EventDispatcher::getInstance();
     eventDispatcher.subscribe(eventTypes::CAT_DETECTED, (Subscriber*)this);
     eventDispatcher.subscribe(eventTypes::FLUSH_BUTTON_PUSHED, (Subscriber*)this);
-    eventDispatcher.subscribe(eventType_t::ALEXA_FLUSH, (Subscriber*)this);
+    eventDispatcher.subscribe(eventType_t::FLUSH_REQUEST, (Subscriber*)this);
 
 }
 
@@ -45,7 +45,7 @@ void L293dEnstop::flushLoop()
     {
         if (flushEnabled_)
         {
-            delay(500);
+            vTaskDelay(pdMS_TO_TICKS(500));
 
             event.eventType = FLUSH_STARTED;
             EventDispatcher::getInstance().sendEvent(event);
@@ -55,7 +55,7 @@ void L293dEnstop::flushLoop()
                 semiTurn();
                 Serial.println("Misturn");
             }
-            delay(L293D_FLUSH_TIME_MS);
+            vTaskDelay(pdMS_TO_TICKS(L293D_FLUSH_TIME_MS));
             semiTurn();
             if(digitalRead(endstop_pin_)==HIGH){
                 semiTurn();
@@ -67,7 +67,7 @@ void L293dEnstop::flushLoop()
             EventDispatcher::getInstance().sendEvent(event);
         }
         //This will prevent CPU from being eaten
-        delay(100);
+        vTaskDelay(pdMS_TO_TICKS(100));
     }
 }
 
@@ -79,28 +79,28 @@ void L293dEnstop::semiTurn()
 
     analogWrite(speed_pin_, L293D_FORWARD_DUTY_CYCLE);
 
-    delay(150);
+    vTaskDelay(pdMS_TO_TICKS(150));
 
     while(digitalRead(endstop_pin_)==LOW){
-        delay(L293D_ENDSTOP_DEBOUNCE_MS);
+        vTaskDelay(pdMS_TO_TICKS(L293D_ENDSTOP_DEBOUNCE_MS));
     }
     while(digitalRead(endstop_pin_)==HIGH){
-        delay(L293D_ENDSTOP_DEBOUNCE_MS);
+        vTaskDelay(pdMS_TO_TICKS(L293D_ENDSTOP_DEBOUNCE_MS));
     }
 
-    delay(L293D_DRIFT_FORWARD_DELAY_MS);
+    vTaskDelay(pdMS_TO_TICKS(L293D_DRIFT_FORWARD_DELAY_MS));
 
     digitalWrite(dir1_pin_, LOW);
     digitalWrite(dir2_pin_, HIGH);
 
     analogWrite(speed_pin_, L293D_REVERSE_DUTY_CYCLE);
-    delay(L293D_DRIFT_REVERSE_DELAY_MS);
+    vTaskDelay(pdMS_TO_TICKS(L293D_DRIFT_REVERSE_DELAY_MS));
 
     digitalWrite(dir1_pin_, LOW);
     digitalWrite(dir2_pin_, LOW);
     analogWrite(speed_pin_, L293D_OFF_DUTY_CYCLE);
 
-    delay(L293D_END_CYCLE_DEBOUNCE_MS);
+    vTaskDelay(pdMS_TO_TICKS(L293D_END_CYCLE_DEBOUNCE_MS));
 }
 
 void L293dEnstop::flush()
@@ -114,7 +114,7 @@ void L293dEnstop::onEvent(Event event)
     {
     case CAT_DETECTED:
     case FLUSH_BUTTON_PUSHED:
-    case ALEXA_FLUSH:
+    case FLUSH_REQUEST:
         flush();
         break;
     

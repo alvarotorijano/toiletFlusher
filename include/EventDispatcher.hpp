@@ -13,8 +13,8 @@ enum eventTypes{
     FLUSH_BUTTON_RELEASED,
     FLUSH_STARTED,
     FLUSH_FINISHED,
-    ALEXA_FLUSH,
-    ALEXA_PRIZE_DELIVERY
+    FLUSH_REQUEST,
+    PRIZE_DELIVERY
 };
 
 typedef enum eventTypes eventType_t;

@@ -5,6 +5,7 @@
 #include <ItoiletFlusher.hpp>
 #include "pins.h"
 #include "eventDispatcher.hpp"
+#include <esp_task_wdt.h>
 
 
 

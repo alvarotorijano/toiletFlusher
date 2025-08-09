@@ -50,15 +50,15 @@ AlexaEventSender::AlexaEventSender()
 
 void AlexaEventSender::prizeDelivery(uint8_t dummie){
     static Event event;
-    event.eventType = ALEXA_PRIZE_DELIVERY;
-    Serial.println("Event ALEXA_PRIZE_DELIVERY");
+    event.eventType = PRIZE_DELIVERY;
+    Serial.println("Event PRIZE_DELIVERY");
     EventDispatcher::getInstance().sendEvent(event);
 }
 
 void AlexaEventSender::flusher(uint8_t dummie){
     static Event event;
-    event.eventType = ALEXA_FLUSH;
-    Serial.println("Event ALEXA_FLUSH");
+    event.eventType = FLUSH_REQUEST;
+    Serial.println("Event FLUSH_REQUEST");
     EventDispatcher::getInstance().sendEvent(event);
 }
 void AlexaEventSender::alexaEventSenderloop(){

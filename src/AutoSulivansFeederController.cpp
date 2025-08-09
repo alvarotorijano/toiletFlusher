@@ -8,7 +8,7 @@ AutoSulivansFeederController::AutoSulivansFeederController()
 
     Serial2.begin(BLUETOOTH_BAUDRATE, BLUETOOTH_SERIAL_MODE, BLUETOOTH_RX_PIN, BLUETOOTH_TX_PIN);
     EventDispatcher::getInstance().subscribe(eventTypes::CAT_DETECTED, this);
-    EventDispatcher::getInstance().subscribe(eventType_t::ALEXA_PRIZE_DELIVERY, this);
+    EventDispatcher::getInstance().subscribe(eventType_t::PRIZE_DELIVERY, this);
     
     xTaskCreate(
     launchAutosulivansTask,
@@ -70,7 +70,7 @@ void AutoSulivansFeederController::onEvent(Event event)
 {
     switch(event.eventType){
         case eventTypes::CAT_DETECTED:
-        case eventType_t::ALEXA_PRIZE_DELIVERY:
+        case eventType_t::PRIZE_DELIVERY:
             dispenseFood();
             break;
     }
